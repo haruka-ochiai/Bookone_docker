@@ -39,6 +39,11 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //
+        $post = Post::create([
+            'title' => $request->title,
+            'body' => $request->body,
+        ]);
+        return redirect()->route('posts.index');
     }
 
     /**
@@ -50,6 +55,8 @@ class PostController extends Controller
     public function show($id)
     {
         //
+        $post = Post::find($id);
+        return view('posts.show', compact('post'));
     }
 
     /**

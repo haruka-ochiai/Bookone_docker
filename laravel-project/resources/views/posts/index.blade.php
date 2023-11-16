@@ -15,7 +15,7 @@
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th>タイトル</th>
+                  <td>タイトル</td>
                   <th>感想</th>
                 </tr>
               </thead>
@@ -23,7 +23,7 @@
                 @if(isset($posts))
                 @foreach ($posts as $post)
                 <tr>
-                  <td>{{ $post->title }}</td>
+                <td><a href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a></td> // ここを編集
                   <td>{{ $post->body }}</td>
                 </tr>
                 @endforeach

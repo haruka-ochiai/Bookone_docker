@@ -15,7 +15,6 @@
                     @endif
 
                     You are logged in!
-                    ログインしています
                     <button type="button" class="btn btn-primary mb-3 d-block w-100" onclick="location.href='{{ route('posts.create') }}'">
                         新規投稿
                     </button>
