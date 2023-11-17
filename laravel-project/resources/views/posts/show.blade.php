@@ -28,6 +28,13 @@
             @if(isset($post))
             <div class="text-center">
                 <button type="button" class="btn btn-secondary" onClick="history.back()">戻る</button>
+                <form style="display:inline" action="{{ route('posts.destroy', $post->id) }}" method="post">
+                    @method('DELETE')
+                    @csrf
+                    <button type="submit" class="btn btn-danger ml-3">
+                        {{ __('削除') }}
+                    </button>
+                </form>
                 <button type="button" class="btn btn-primary ml-3" onClick="location.href='{{ route('posts.edit', $post->id) }}'">
                     編集
                 </button>
