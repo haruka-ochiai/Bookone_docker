@@ -6,9 +6,9 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">投稿一覧</div>
-
         <div>
         <form action="{{ route('posts.search') }}" method="get">
+          @csrf
           <input type="text" class="form-control input-lg" placeholder="Buscar" name="search" value="">
           <input type="submit" value="検索">
         </form>
