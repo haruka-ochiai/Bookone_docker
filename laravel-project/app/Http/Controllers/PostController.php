@@ -12,11 +12,34 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $posts = Post::all();
-        return view('posts.index', compact('posts'));
+        $posts = Post::paginate(20);
+        // 検索フォームで入力された値を取得する
+        $search = $request->input('search');
+        $query = Post::query();
+        if ($search) {
+            // 全角スペースを半角に変換
+            $spaceConversion = mb_convert_kana($search, 's');
+
+            // 単語を半角スペースで区切り、配列にする（例："山田 翔" → ["山田", "翔"]）
+            $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+
+
+            // 単語をループで回し、ユーザーネームと部分一致するものがあれば、$queryとして保持される
+            foreach($wordArraySearched as $value) {
+                $query->where('title', 'like', '%'.$value.'%');
+            }
+            $users = $query->paginate(20);
+
+        }
+    
+        return view('posts.index')
+            ->with([
+                'posts' => $posts,
+                'search' => $search,
+            ]);
+
     }
 
     /**

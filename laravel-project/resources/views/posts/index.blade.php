@@ -6,6 +6,19 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">投稿一覧</div>
+        
+        <form method="GET" action="{{ route('posts.index') }}">
+        <input type="search" placeholder="入力" name="search" value="{{ $search ?? '' }}">
+
+            <div>
+                <button type="submit">検索</button>
+                <button>
+                    <a href="{{ route('posts.index') }}" class="text-white">
+                        クリア
+                    </a>
+                </button>
+            </div>
+        </form>
 
         <div class="card-body">
             <button type="button" class="btn btn-primary mb-3 d-block w-100" onclick="location.href='{{ route('posts.create') }}'">
