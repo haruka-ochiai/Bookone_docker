@@ -12,34 +12,11 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $posts = Post::paginate(20);
-        // 検索フォームで入力された値を取得する
-        $search = $request->input('search');
-        $query = Post::query();
-        if ($search) {
-            // 全角スペースを半角に変換
-            $spaceConversion = mb_convert_kana($search, 's');
-
-            // 単語を半角スペースで区切り、配列にする（例："山田 翔" → ["山田", "翔"]）
-            $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
-
-
-            // 単語をループで回し、ユーザーネームと部分一致するものがあれば、$queryとして保持される
-            foreach($wordArraySearched as $value) {
-                $query->where('title', 'like', '%'.$value.'%');
-            }
-            $users = $query->paginate(20);
-
-        }
-    
-        return view('posts.index')
-            ->with([
-                'posts' => $posts,
-                'search' => $search,
-            ]);
-
+        //
+        $posts = Post::all();
+        return view('posts.index', compact('posts'));
     }
 
     /**
@@ -122,5 +99,22 @@ class PostController extends Controller
         $post = Post::find($id);
         $post ->delete();
         return redirect()->route('posts.index');
+    }
+
+    public function search(Request $request)
+    {
+
+        $posts = Post::where('title', 'like', "%{$request->search}%")
+                ->orWhere('body', 'like', "%{$request->search}%")
+                ->paginate(15);
+
+
+        $search_result = $request->search.'の検索結果'.$posts->total().'件';
+
+        return view('posts.index', [
+            'posts' => $posts,
+            'search_result' => $search_result,
+            'search_query'  => $request->search
+        ]);
     }
 }

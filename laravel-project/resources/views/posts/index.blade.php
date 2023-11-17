@@ -6,19 +6,16 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">投稿一覧</div>
-        
-        <form method="GET" action="{{ route('posts.index') }}">
-        <input type="search" placeholder="入力" name="search" value="{{ $search ?? '' }}">
 
-            <div>
-                <button type="submit">検索</button>
-                <button>
-                    <a href="{{ route('posts.index') }}" class="text-white">
-                        クリア
-                    </a>
-                </button>
-            </div>
+        <div>
+        <form action="{{ route('posts.search') }}" method="get">
+          <input type="text" class="form-control input-lg" placeholder="Buscar" name="search" value="">
+          <input type="submit" value="検索">
         </form>
+        </div>
+        @isset($search_result)
+          <h5 class="card-title">{{ $search_result }}</h5>
+        @endisset
 
         <div class="card-body">
             <button type="button" class="btn btn-primary mb-3 d-block w-100" onclick="location.href='{{ route('posts.create') }}'">
@@ -33,14 +30,12 @@
                 </tr>
               </thead>
               <tbody>
-                @if(isset($posts))
-                @foreach ($posts as $post)
-                <tr>
-                <td><a href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a></td> // ここを編集
-                  <td>{{ $post->body }}</td>
-                </tr>
+                @foreach($posts as $post)
+                    <tr>
+                    <td><a href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a></td>
+                      <td>{{ $post->body }}</td>
+                    </tr>
                 @endforeach
-                @endif
               </tbody>
             </table>
           </div>
